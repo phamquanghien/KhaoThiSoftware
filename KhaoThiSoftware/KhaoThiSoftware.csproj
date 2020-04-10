@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44311</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -159,6 +159,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admins\AdminsAreaRegistration.cs" />
+    <Compile Include="Areas\Admins\Controllers\DanhSachThi_AdController.cs" />
     <Compile Include="Areas\Admins\Controllers\Home_AdController.cs" />
     <Compile Include="Areas\Admins\Controllers\KyThi_AdController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -166,9 +167,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004091036013_InitialCreate.cs" />
-    <Compile Include="Migrations\202004091036013_InitialCreate.Designer.cs">
-      <DependentUpon>202004091036013_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202004100956091_Create_Database.cs" />
+    <Compile Include="Migrations\202004100956091_Create_Database.Designer.cs">
+      <DependentUpon>202004100956091_Create_Database.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -178,12 +179,13 @@
     <Compile Include="Models\KyThi.cs" />
     <Compile Include="Models\Process\StringProcess.cs" />
     <Compile Include="Models\Role.cs" />
-    <Compile Include="Models\UserRoleProvider.cs" />
+    <Compile Include="Models\UsersRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\W3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -198,9 +200,11 @@
     <Content Include="Areas\Admins\Views\web.config" />
     <Content Include="Areas\Admins\Views\KyThi_Ad\Create.cshtml" />
     <Content Include="Areas\Admins\Views\KyThi_Ad\Delete.cshtml" />
-    <Content Include="Areas\Admins\Views\KyThi_Ad\Details.cshtml" />
     <Content Include="Areas\Admins\Views\KyThi_Ad\Edit.cshtml" />
     <Content Include="Areas\Admins\Views\KyThi_Ad\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Areas\Admins\Views\Home_Ad\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\DanhSachThi_Ad\GetListStudent.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -232,8 +236,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admins\Models\" />
-    <Folder Include="Areas\Admins\Views\Home_Ad\" />
-    <Folder Include="Areas\Admins\Views\Shared\" />
+    <Folder Include="Uploads\Excels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -244,8 +247,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004091036013_InitialCreate.resx">
-      <DependentUpon>202004091036013_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004100956091_Create_Database.resx">
+      <DependentUpon>202004100956091_Create_Database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

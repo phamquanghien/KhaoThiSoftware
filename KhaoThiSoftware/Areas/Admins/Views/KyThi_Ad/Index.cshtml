@@ -2,36 +2,24 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Danh sách các đợt thi</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Tạo mới đợt thi", "Create", null, new { @class = "btn btn-success"})
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.MaKyThi)
+            <label>Mã kỳ thi</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TenKyThi)
+            <label>Tên kỳ thi</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NgayTao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NguoiTao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ChuThich)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isDelete)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
+            <label>Chú thích</label>
         </th>
         <th></th>
     </tr>
@@ -45,24 +33,12 @@
             @Html.DisplayFor(modelItem => item.TenKyThi)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.NgayTao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NguoiTao)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ChuThich)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.isDelete)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdKyThi }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdKyThi }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdKyThi })
+            @Html.ActionLink("Sửa", "Edit", new { id = item.IdKyThi }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Xoá", "Delete", new { id = item.IdKyThi }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Danh sách thí sinh", "GetListStudent", "DanhSachThi_Ad", new { id = item.IdKyThi }, new { @class = "btn btn-primary" })
         </td>
     </tr>
 }

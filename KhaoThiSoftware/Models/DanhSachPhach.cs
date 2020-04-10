@@ -9,7 +9,8 @@ namespace KhaoThiSoftware.Models
     [Table("DanhSachPhachs")]
     public partial class DanhSachPhach
     {
-        public long Id { get; set; }
+        [Key]
+        public long IdDanhSachPhach { get; set; }
 
         public string f_mamh { get; set; }
 

@@ -19,8 +19,9 @@ namespace KhaoThiSoftware.Controllers
                 {
                     var role = new Role();
                     role.RoleID = "Admin";
-                    role.RoleName = "Quản trị";
+                    role.RoleName = "Admin";
                     db.Roles.Add(role);
+                    db.SaveChanges();
                     var acc = new Account();
                     acc.UserName = "admin";
                     acc.Password = strPro.GetMD5("123456");

@@ -6,7 +6,7 @@ using System.Web.Security;
 
 namespace KhaoThiSoftware.Models
 {
-    public class UserRoleProvider : RoleProvider
+    public class UsersRoleProvider : RoleProvider
     {
         public override string ApplicationName
         {
@@ -48,7 +48,7 @@ namespace KhaoThiSoftware.Models
 
         public override string[] GetRolesForUser(string username)
         {
-            using (KhaoThiDBContext db   = new KhaoThiDBContext())
+            using (KhaoThiDBContext db = new KhaoThiDBContext())
             {
                 var userRoles = (from user in db.Accounts
                                  join role in db.Roles

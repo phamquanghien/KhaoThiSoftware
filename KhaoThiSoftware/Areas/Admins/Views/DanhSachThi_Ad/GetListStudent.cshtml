@@ -1,0 +1,100 @@
+﻿@model IEnumerable<KhaoThiSoftware.Models.DanhSachThi>
+
+@{
+    ViewBag.Title = "GetListStudent";
+    Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>GetListStudent</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.f_masv)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_mamh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_holotvn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_tenvn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_ngaysinh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sobaodanh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_tenlop)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.f_tenmhvn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ngaythi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phongthi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tietbatdau)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sotiet)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_masv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_mamh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_holotvn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_tenvn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_ngaysinh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sobaodanh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_tenlop)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_tenmhvn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ngaythi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phongthi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tietbatdau)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sotiet)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

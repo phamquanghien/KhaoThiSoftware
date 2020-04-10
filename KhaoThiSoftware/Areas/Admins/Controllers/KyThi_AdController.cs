@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using KhaoThiSoftware.Models;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class KyThi_AdController : Controller
     {
         private KhaoThiDBContext db = new KhaoThiDBContext();
@@ -19,22 +17,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         {
             return View(db.KyThis.ToList());
         }
-
-        // GET: Admins/KyThi_Ad/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            KyThi kyThi = db.KyThis.Find(id);
-            if (kyThi == null)
-            {
-                return HttpNotFound();
-            }
-            return View(kyThi);
-        }
-
+        
         // GET: Admins/KyThi_Ad/Create
         public ActionResult Create()
         {
@@ -48,6 +31,10 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdKyThi,MaKyThi,TenKyThi,NgayTao,NguoiTao,ChuThich,isDelete,Status")] KyThi kyThi)
         {
+            kyThi.NgayTao = DateTime.Now;
+            kyThi.isDelete = false;
+            kyThi.Status = true;
+            kyThi.NguoiTao = Session["idUser"].ToString();
             if (ModelState.IsValid)
             {
                 db.KyThis.Add(kyThi);

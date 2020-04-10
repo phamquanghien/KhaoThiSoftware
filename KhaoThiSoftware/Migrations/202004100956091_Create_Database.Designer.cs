@@ -7,13 +7,13 @@ namespace KhaoThiSoftware.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class Create_Database : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Create_Database));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004091036013_InitialCreate"; }
+            get { return "202004100956091_Create_Database"; }
         }
         
         string IMigrationMetadata.Source

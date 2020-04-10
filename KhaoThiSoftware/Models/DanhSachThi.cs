@@ -5,10 +5,11 @@ namespace KhaoThiSoftware.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-
+    [Table("DanhSachThis")]
     public partial class DanhSachThi
     {
-        public int Id { get; set; }
+        [Key]
+        public int IdDanhSachThi { get; set; }
 
         public string f_masv { get; set; }
 
@@ -33,5 +34,6 @@ namespace KhaoThiSoftware.Models
         public int tietbatdau { get; set; }
 
         public int sotiet { get; set; }
+        public int IdKyThi { get; set; }
     }
 }
