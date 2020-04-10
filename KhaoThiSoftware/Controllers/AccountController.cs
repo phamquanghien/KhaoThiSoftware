@@ -48,11 +48,11 @@ namespace KhaoThiSoftware.Controllers
                 using (var db = new KhaoThiDBContext())
                 {
                     var passToMD5 = strPro.GetMD5(acc.Password);
-                    var account = db.Accounts.Where(m => m.UserName.Equals(acc.UserName) && m.Password.Equals(passToMD5)).ToList();
-                    if (account.Count() == 1)
+                    var account = db.Accounts.Where(m => m.UserName.Equals(acc.UserName) && m.Password.Equals(passToMD5)).Count();
+                    if (account == 1)
                     {
                         FormsAuthentication.SetAuthCookie(acc.UserName, false);
-                        Session["idUser"] = account.FirstOrDefault().UserName;
+                        Session["idUser"] = acc.UserName;
                         return RedirectToLocal(returnUrl);
                     }
                 }

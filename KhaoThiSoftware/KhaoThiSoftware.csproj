@@ -48,6 +48,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.BulkInsert, Version=6.0.1.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.BulkInsert-ef6.6.0.1.2\lib\net45\EntityFramework.BulkInsert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -177,7 +181,10 @@
     <Compile Include="Models\DanhSachThi.cs" />
     <Compile Include="Models\KhaoThiDBContext.cs" />
     <Compile Include="Models\KyThi.cs" />
-    <Compile Include="Models\Process\StringProcess.cs" />
+    <Compile Include="Models\Process\FileExt.cs" />
+    <Compile Include="Models\Process\ImportExcel.cs" />
+    <Compile Include="Models\Process\ProcessLogic.cs" />
+    <Compile Include="Models\Process\StringProcessing.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\UsersRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,7 +211,8 @@
     <Content Include="Areas\Admins\Views\KyThi_Ad\Index.cshtml" />
     <Content Include="Areas\Admins\Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Areas\Admins\Views\Home_Ad\Index.cshtml" />
-    <Content Include="Areas\Admins\Views\DanhSachThi_Ad\GetListStudent.cshtml" />
+    <Content Include="Areas\Admins\Views\DanhSachThi_Ad\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\DanhSachThi_Ad\Upload.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

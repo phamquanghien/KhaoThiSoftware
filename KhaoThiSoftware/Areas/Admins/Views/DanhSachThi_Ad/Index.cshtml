@@ -1,0 +1,54 @@
+﻿@model IEnumerable<KhaoThiSoftware.Models.DanhSachThi>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Danh sách thí sinh</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới thí sinh", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Upload File", "Upload", null, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            <label>Mã sinh viên</label>
+        </th>
+        <th>
+            <label>Họ tên</label>
+        </th>
+        <th>
+            <label>Số báo danh</label>
+        </th>
+        <th>
+            <label>Tên môn học</label>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_masv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_holotvn)
+            @Html.DisplayFor(modelItem => item.f_tenvn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sobaodanh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.f_tenmhvn)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdDanhSachThi }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdDanhSachThi }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdDanhSachThi })
+        </td>
+    </tr>
+}
+
+</table>
