@@ -220,6 +220,7 @@
     <Content Include="Areas\Admins\Views\Home_Ad\Index.cshtml" />
     <Content Include="Areas\Admins\Views\DanhSachThi_Ad\Index.cshtml" />
     <Content Include="Areas\Admins\Views\DanhSachThi_Ad\Upload.cshtml" />
+    <Content Include="Areas\Admins\Views\DanhSachThi_Ad\UploadFile.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

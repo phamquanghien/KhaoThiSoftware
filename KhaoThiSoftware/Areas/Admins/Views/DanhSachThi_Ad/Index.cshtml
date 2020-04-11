@@ -7,13 +7,15 @@
 
 <h2>Danh sách thí sinh: @ViewBag.sobanghi</h2>
 <div id="divUploadFile" style="display: none;">
-    <form action="" method="post" enctype="multipart/form-data">
-
-        <label for="file">Filename:</label>
-        <input type="file" name="file" id="file" />
-
-        <input type="submit" />
-    </form>
+    @using (Html.BeginForm("UploadFile", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            <input type="text" name="idKyThi" value="@ViewBag.idKyThi" hidden />
+            @Html.TextBox("file", "", new { type = "file" }) <br />
+            <input type="submit" value="Upload" />
+            @ViewBag.Message
+        </div>
+    }
 </div>
 <br />
 <p>

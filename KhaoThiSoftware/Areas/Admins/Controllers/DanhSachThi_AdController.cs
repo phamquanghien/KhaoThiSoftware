@@ -6,12 +6,16 @@ using System.Data.OleDb;
 using System.Data;
 using System.Web;
 using System.IO;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
     public class DanhSachThi_AdController : Controller
     {
         KhaoThiDBContext db = new KhaoThiDBContext();
+        ExcelProcess excelPro = new ExcelProcess();
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["KhaoThiDBContext"].ConnectionString);
         // GET: Admins/DanhSachThi_Ad
         public ActionResult Index(int? id)
         {
@@ -22,16 +26,52 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult UpLoadFile(HttpPostedFileBase file, int idKyThi)
+        public ActionResult UploadFile(HttpPostedFileBase file, int? idKyThi)
         {
-            var makyThi = db.KyThis.Find(idKyThi).MaKyThi;
-            if (file.ContentLength > 0)
+            var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
+
+            try
             {
-                var fileName = makyThi + DateTime.Now.ToString();
-                var path = Path.Combine(Server.MapPath("~/Uploads/Excels"), fileName);
-                file.SaveAs(path);
+                if (file.ContentLength > 0)
+                {
+                    //string _FileName = maKyThi + DateTime.Now.ToString();
+                    string _FileName = Path.GetFileName(file.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
+                    file.SaveAs(_path);
+                    DataTable dt = excelPro.ReadDataFromExcelFile(_path);
+                    DataColumn col = dt.Columns.Add("IdKyThi", typeof(Int32));
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        //column IDKYTHi
+                        dt.Rows[i][12] = idKyThi;
+                    }
+                    //col.DefaultValue = idKyThi;
+                    SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
+                    bulkcopy.DestinationTableName = "DanhSachThis";
+                    bulkcopy.ColumnMappings.Add(0, "f_masv");
+                    bulkcopy.ColumnMappings.Add(1, "f_mamh");
+                    bulkcopy.ColumnMappings.Add(2, "f_holotvn");
+                    bulkcopy.ColumnMappings.Add(3, "f_tenvn");
+                    bulkcopy.ColumnMappings.Add(4, "f_ngaysinh");
+                    bulkcopy.ColumnMappings.Add(5, "sobaodanh");
+                    bulkcopy.ColumnMappings.Add(6, "f_tenlop");
+                    bulkcopy.ColumnMappings.Add(7, "f_tenmhvn");
+                    bulkcopy.ColumnMappings.Add(8, "ngaythi");
+                    bulkcopy.ColumnMappings.Add(9, "phongthi");
+                    bulkcopy.ColumnMappings.Add(10, "tietbatdau");
+                    bulkcopy.ColumnMappings.Add(11, "sotiet");
+                    bulkcopy.ColumnMappings.Add(12, "IdKyThi");
+                    con.Open();
+                    bulkcopy.WriteToServer(dt);
+                    con.Close();
+                }
+                ViewBag.Message = "File Uploaded Successfully!!";
+                return RedirectToAction("Index", "DanhSachThi_Ad", new { id = idKyThi });
             }
-            return RedirectToAction("Index");
+            catch
+            {
+                return View();
+            }
         }
         public JsonResult GetData(int id)
         {
@@ -47,72 +87,6 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
 
             }
             return View();
-        }
-
-        public ActionResult Upload(int idKyThi)
-        {
-            string path = @"D:\Demo.xls";
-            DataTable dt = ReadDataFromExcelFile(path);
-
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                var dst = new DanhSachThi();
-                dst.f_masv = dt.Rows[i][0].ToString();
-                dst.f_mamh = dt.Rows[i][1].ToString();
-                dst.f_holotvn = dt.Rows[i][2].ToString();
-                dst.f_tenvn = dt.Rows[i][3].ToString();
-                dst.f_ngaysinh = dt.Rows[i][4].ToString();
-                dst.sobaodanh = Convert.ToInt32(dt.Rows[i][5].ToString());
-                dst.f_tenlop = dt.Rows[i][6].ToString();
-                dst.f_tenmhvn = dt.Rows[i][7].ToString();
-                dst.ngaythi = Convert.ToDateTime(dt.Rows[i][8].ToString());
-                dst.phongthi = dt.Rows[i][9].ToString();
-                dst.tietbatdau = Convert.ToInt32(dt.Rows[i][10].ToString());
-                dst.sotiet = Convert.ToInt32(dt.Rows[i][11].ToString());
-                dst.IdKyThi = idKyThi;
-                db.DanhSachThis.Add(dst);
-            }
-            db.SaveChanges();
-            ViewBag.countRow = dt.Rows.Count;
-            return View();
-        }
-
-        private DataTable ReadDataFromExcelFile(string pathFile)
-        {
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathFile + ";Extended Properties=Excel 8.0";
-            // Tạo đối tượng kết nối
-            OleDbConnection oledbConn = new OleDbConnection(connectionString);
-            DataTable data = null;
-            try
-            {
-                // Mở kết nối
-                oledbConn.Open();
-
-                // Tạo đối tượng OleDBCommand và query data từ sheet có tên "Sheet1"
-                OleDbCommand cmd = new OleDbCommand("SELECT * FROM [Sheet1$]", oledbConn);
-
-                // Tạo đối tượng OleDbDataAdapter để thực thi việc query lấy dữ liệu từ tập tin excel
-                OleDbDataAdapter oleda = new OleDbDataAdapter();
-
-                oleda.SelectCommand = cmd;
-
-                // Tạo đối tượng DataSet để hứng dữ liệu từ tập tin excel
-                DataSet ds = new DataSet();
-
-                // Đổ đữ liệu từ tập excel vào DataSet
-                oleda.Fill(ds);
-
-                data = ds.Tables[0];
-            }
-            catch (Exception ex)
-            {
-            }
-            finally
-            {
-                // Đóng chuỗi kết nối
-                oledbConn.Close();
-            }
-            return data;
         }
     }
 }
