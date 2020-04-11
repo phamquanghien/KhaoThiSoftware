@@ -5,13 +5,25 @@
     Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Danh sách thí sinh</h2>
+<h2>Danh sách thí sinh: @ViewBag.sobanghi</h2>
+<div id="divUploadFile" style="display: none;">
+    <form action="" method="post" enctype="multipart/form-data">
 
+        <label for="file">Filename:</label>
+        <input type="file" name="file" id="file" />
+
+        <input type="submit" />
+    </form>
+</div>
+<br />
 <p>
     @Html.ActionLink("Thêm mới thí sinh", "Create", null, new { @class = "btn btn-success" })
-    @Html.ActionLink("Upload File", "Upload", null, new { @class = "btn btn-success" })
+    @*@Html.ActionLink("Upload File", "Upload", new { idKyThi = @ViewBag.idKyThi }, new { @class = "btn btn-primary" })*@
+    <input type="button" value="Upload File" id="btnUploadFile" class="btn btn-primary" />
+    <input type="button" value="Sinh phách" id="btnGenPhach" class="btn btn-success" />
+    <input type="button" value="GetData" id="btnGetData" class="btn btn-primary" />
 </p>
-<table class="table">
+<table class="table" id="tblStudent">
     <tr>
         <th>
             <label>Mã sinh viên</label>
@@ -28,27 +40,89 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.f_masv)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.f_holotvn)
-            @Html.DisplayFor(modelItem => item.f_tenvn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sobaodanh)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.f_tenmhvn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdDanhSachThi }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdDanhSachThi }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdDanhSachThi })
-        </td>
-    </tr>
-}
+@*@foreach (var item in Model) {
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.f_masv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.f_holotvn)
+                @Html.DisplayFor(modelItem => item.f_tenvn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sobaodanh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.f_tenmhvn)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdDanhSachThi }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdDanhSachThi }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdDanhSachThi })
+            </td>
+        </tr>
+    </tbody>
+}*@
+    <tbody class="tbody">
+        
+    </tbody>
 
 </table>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //LoadData(@ViewBag.idKyThi);
+    });
+    $('#btnGetData').click(function () {
+        LoadData(@ViewBag.idKyThi);
+    });
+    $('#btnUploadFile').click(function () {
+        UploadFile();
+    });
+    function GenPhach(id) {
+        $.ajax({
+            url: "/DanhSachThi_Ad/GenPhach/" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                alert(result);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function LoadData(id) {
+        $.ajax({
+            url: "/DanhSachThi_Ad/GetData/" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.f_masv + '</td>';
+                    html += '<td>' + item.f_holotvn + ' ' + item.f_tenvn + '</td>';
+                    html += '<td>' + item.sobaodanh + '</td>';
+                    html += '<td>' + item.f_tenmhvn + '</td>';
+                    html += '</tr>';
+                });
+                $('.tbody').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function UploadFile() {
+        var x = document.getElementById("divUploadFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

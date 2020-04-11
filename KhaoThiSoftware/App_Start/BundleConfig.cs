@@ -11,6 +11,9 @@ namespace KhaoThiSoftware
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ajax").Include(
+                        "~/Scripts/jquery-1.10.2.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
@@ -27,6 +30,7 @@ namespace KhaoThiSoftware
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/W3.css"));
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

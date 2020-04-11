@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using KhaoThiSoftware.Models;
 using System.Data.OleDb;
 using System.Data;
-using System.Data.Common;
+using System.Web;
+using System.IO;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
@@ -14,20 +13,51 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
     {
         KhaoThiDBContext db = new KhaoThiDBContext();
         // GET: Admins/DanhSachThi_Ad
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
-            //return View(db.DanhSachThis.Where(m => m.IdDanhSachThi == id).ToList());
-            return View(db.DanhSachThis.ToList());
+            if (id == null) return RedirectToAction("Index", "KyThi_Ad");
+            var model = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
+            ViewBag.sobanghi = model.Count;
+            ViewBag.idKyThi = id;
+            return View();
         }
-        public ActionResult Upload()
+        [HttpPost]
+        public ActionResult UpLoadFile(HttpPostedFileBase file, int idKyThi)
+        {
+            var makyThi = db.KyThis.Find(idKyThi).MaKyThi;
+            if (file.ContentLength > 0)
+            {
+                var fileName = makyThi + DateTime.Now.ToString();
+                var path = Path.Combine(Server.MapPath("~/Uploads/Excels"), fileName);
+                file.SaveAs(path);
+            }
+            return RedirectToAction("Index");
+        }
+        public JsonResult GetData(int id)
+        {
+            var model = db.DanhSachThis.Where(m => m.IdKyThi == id).Take(1000).ToList();
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GenPhach(int id)
+        {
+            var sophach = db.DanhSachThis.Where(m => m.IdKyThi == id);
+            if (sophach.Count() == 0)
+            {
+
+            }
+            return View();
+        }
+
+        public ActionResult Upload(int idKyThi)
         {
             string path = @"D:\Demo.xls";
             DataTable dt = ReadDataFromExcelFile(path);
-           
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 var dst = new DanhSachThi();
-                dst.f_masv = dt.Rows[i][0].ToString() ;
+                dst.f_masv = dt.Rows[i][0].ToString();
                 dst.f_mamh = dt.Rows[i][1].ToString();
                 dst.f_holotvn = dt.Rows[i][2].ToString();
                 dst.f_tenvn = dt.Rows[i][3].ToString();
@@ -39,12 +69,14 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 dst.phongthi = dt.Rows[i][9].ToString();
                 dst.tietbatdau = Convert.ToInt32(dt.Rows[i][10].ToString());
                 dst.sotiet = Convert.ToInt32(dt.Rows[i][11].ToString());
+                dst.IdKyThi = idKyThi;
                 db.DanhSachThis.Add(dst);
             }
             db.SaveChanges();
             ViewBag.countRow = dt.Rows.Count;
             return View();
         }
+
         private DataTable ReadDataFromExcelFile(string pathFile)
         {
             string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathFile + ";Extended Properties=Excel 8.0";
