@@ -15,6 +15,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
     {
         KhaoThiDBContext db = new KhaoThiDBContext();
         ExcelProcess excelPro = new ExcelProcess();
+        ProcessLogic proLogic = new ProcessLogic();
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["KhaoThiDBContext"].ConnectionString);
         // GET: Admins/DanhSachThi_Ad
         public ActionResult Index(int? id)
@@ -22,7 +23,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             if (id == null) return RedirectToAction("Index", "KyThi_Ad");
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
             ViewBag.sobanghi = model.Count;
-            ViewBag.idKyThi = id;
+            ViewBag.idkt = id;
             return View();
         }
         [HttpPost]
@@ -78,15 +79,41 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).Take(1000).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
-        public ActionResult GenPhach(int id)
+        public ActionResult GenPhach(int? idkt)
         {
-            var sophach = db.DanhSachThis.Where(m => m.IdKyThi == id);
-            if (sophach.Count() == 0)
-            {
 
+            if (idkt == null)
+            {
+                return Json("Sinh phách thất bại. Lý do: Chưa chọn kỳ thi", JsonRequestBehavior.AllowGet);
             }
-            return View();
+            var listDanhSachThi = db.DanhSachThis.Where(m => m.IdKyThi == idkt).ToList();
+            if (listDanhSachThi.Count() == 0)
+            {
+                return Json("Sinh phách thất bại. Lý do: Chưa có danh sách thí sinh của kỳ thi", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("SoPhach", typeof(string));
+                table.Columns.Add("IdDanhSachThi", typeof(double));
+                table.Columns.Add("IdKyThi", typeof(int));
+                string[] arrCode = proLogic.GenBeatcodeWithQuantity(listDanhSachThi.Count, 5);
+                for (int i = 0; i < arrCode.Length; i++)
+                {
+                    table.Rows.Add(arrCode[i].ToString(), Convert.ToDouble(listDanhSachThi[i].IdDanhSachThi), idkt);
+                }
+                var x = table.Rows.Count;
+                SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
+                bulkcopy.DestinationTableName = "DanhSachPhachs";
+                bulkcopy.ColumnMappings.Add(0, "SoPhach");
+                bulkcopy.ColumnMappings.Add(1, "IdDanhSachThi");
+                bulkcopy.ColumnMappings.Add(2, "IdKyThi");
+                con.Open();
+                bulkcopy.WriteToServer(table);
+                con.Close();
+                var countPhach = db.DanhSachPhachs.Where(m => m.IdKyThi == idkt).Select(m => m.SoPhach).Distinct().ToList().Count;
+                return Json("Sinh thành công " + countPhach + " phách!", JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

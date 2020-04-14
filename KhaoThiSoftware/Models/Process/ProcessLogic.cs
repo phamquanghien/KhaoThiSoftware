@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace KhaoThiSoftware.Models.Process
+namespace KhaoThiSoftware.Models
 {
     public class ProcessLogic
     {
         int[] arr; string[] arrReturn;
-        public string[] GenerateBeatcode(int istart, int ifinish, int inumber)
+        public string[] GenerateBeatcode(int istart, int ifinish, int codeLength)
         {
             int iPhanTu = ifinish - istart;
             arr = new int[iPhanTu];
@@ -18,7 +18,22 @@ namespace KhaoThiSoftware.Models.Process
             arrReturn = new string[iPhanTu];
             for (int i = 0; i < arr.Length; i++)
             {
-                arrReturn[i] = AddZero(arr[i], inumber);
+                arrReturn[i] = AddZero(arr[i], codeLength);
+            }
+            return arrReturn;
+        }
+        public string[] GenBeatcodeWithQuantity(int numberCode, int codeLength)
+        {
+            arr = new int[numberCode];
+            for (int i = 0; i < numberCode; i++)
+            {
+                arr[i] = i+1;
+            }
+            arr = SortRandomArray(SortRandomArray(arr));
+            arrReturn = new string[numberCode];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arrReturn[i] = AddZero(arr[i], codeLength);
             }
             return arrReturn;
         }

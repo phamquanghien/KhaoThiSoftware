@@ -9,6 +9,8 @@ using System.IO;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using KhaoThiSoftware.Models;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace KhaoThiSoftware.Controllers
 {
@@ -18,7 +20,11 @@ namespace KhaoThiSoftware.Controllers
         ExcelProcess excelPro = new ExcelProcess();
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["KhaoThiDBContext"].ConnectionString);
         // GET: Demo
-        public ActionResult Index(int? size, int? page)
+        public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult GetData(int? size, int? page)
         {
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "10", Value = "10" });
@@ -104,6 +110,63 @@ namespace KhaoThiSoftware.Controllers
             //    ViewBag.Message = "File upload failed!!";
             //    return View();
             //}
+        }
+
+        public ActionResult GenPhach()
+        {
+            KhaoThiDBContext db = new KhaoThiDBContext();
+
+            List<DanhSachPhach> allPhach = new List<DanhSachPhach>();
+            allPhach = db.DanhSachPhachs.ToList();
+
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Reports/rpt"), "GenPhach.rpt"));
+
+            rd.SetDataSource(allPhach);
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+
+
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(stream, "application/pdf", "Report.pdf");
+        }
+
+        public ActionResult GenPhach2()
+        {
+            KhaoThiDBContext db = new KhaoThiDBContext();
+
+            var allPhach = (from dsp in db.DanhSachPhachs
+                         join dst in db.DanhSachThis
+                         on dsp.IdDanhSachThi equals dst.IdDanhSachThi
+                         select new {
+                             f_masv = dst.f_masv,
+                             SoPhach = dsp.SoPhach,
+                             f_holotvn = dst.f_holotvn,
+                             f_tenvn = dst.f_tenvn 
+                         }).ToList();
+            
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Reports/rpt"), "GenPhach.rpt"));
+
+            rd.SetDataSource(allPhach);
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+
+
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(stream, "application/pdf", "Report.pdf");
+        }
+
+        public ActionResult GetDataReport()
+        {
+            return View();
         }
     }
 }

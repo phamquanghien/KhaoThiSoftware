@@ -5,12 +5,13 @@
     Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Danh sách thí sinh: @ViewBag.sobanghi</h2>
+<h2 id="Message">Danh sách thí sinh: @ViewBag.sobanghi</h2>
+
 <div id="divUploadFile" style="display: none;">
     @using (Html.BeginForm("UploadFile", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
-            <input type="text" name="idKyThi" value="@ViewBag.idKyThi" hidden />
+            <input type="text" name="idKyThi" value="@ViewBag.idkt" hidden />
             @Html.TextBox("file", "", new { type = "file" }) <br />
             <input type="submit" value="Upload" />
             @ViewBag.Message
@@ -19,11 +20,11 @@
 </div>
 <br />
 <p>
-    @Html.ActionLink("Thêm mới thí sinh", "Create", null, new { @class = "btn btn-success" })
-    @*@Html.ActionLink("Upload File", "Upload", new { idKyThi = @ViewBag.idKyThi }, new { @class = "btn btn-primary" })*@
+    @Html.ActionLink("Danh sách đợt thi", "Index", "KyThi_Ad", null, new { @class = "btn btn-success" })
     <input type="button" value="Upload File" id="btnUploadFile" class="btn btn-primary" />
-    <input type="button" value="Sinh phách" id="btnGenPhach" class="btn btn-success" />
-    <input type="button" value="GetData" id="btnGetData" class="btn btn-primary" />
+    <input type="button" value="Lấy dữ liệu" id="btnGetData" class="btn btn-primary" />
+    <input type="button" value="Sinh phách" id="btnGenPhach" class="btn btn-primary" />
+    <input type="button" value="Ghép phách" id="btnGhepPhach" class="btn btn-primary" />
 </p>
 <table class="table" id="tblStudent">
     <tr>
@@ -39,72 +40,55 @@
         <th>
             <label>Tên môn học</label>
         </th>
-        <th></th>
     </tr>
-
-@*@foreach (var item in Model) {
-    <tbody>
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.f_masv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.f_holotvn)
-                @Html.DisplayFor(modelItem => item.f_tenvn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sobaodanh)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.f_tenmhvn)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.IdDanhSachThi }) |
-                @Html.ActionLink("Details", "Details", new { id = item.IdDanhSachThi }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.IdDanhSachThi })
-            </td>
-        </tr>
-    </tbody>
-}*@
     <tbody class="tbody">
         
     </tbody>
 
 </table>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/ajax")
 <script>
     $(document).ready(function () {
-        //LoadData(@ViewBag.idKyThi);
     });
-    $('#btnGetData').click(function () {
-        LoadData(@ViewBag.idKyThi);
-    });
+
     $('#btnUploadFile').click(function () {
         UploadFile();
     });
-    function GenPhach(id) {
+    $('#btnGetData').click(function () {
+        GetData();
+    });
+
+    $('#btnGenPhach').click(function () {
+        GenPhach();
+    });
+
+    $('#btnGhepPhach').click(function () {
+        alert('Chức năng đang xây dựng');
+    });
+
+    function GenPhach() {
         $.ajax({
-            url: "/DanhSachThi_Ad/GenPhach/" + id,
+            url: "/Admins/DanhSachThi_Ad/GenPhach",
             type: "GET",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                alert(result);
+            data: { idkt: @ViewBag.idkt },
+            success: function (response) {
+                alert(response);
             },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
+            error: function (response) {
+                alert('Thất bại');
             }
         });
-    }
-    function LoadData(id) {
+    };
+
+    function GetData() {
         $.ajax({
-            url: "/DanhSachThi_Ad/GetData/" + id,
+            url: "/Admins/DanhSachThi_Ad/GetData",
             type: "GET",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result) {
+            data: { id: @ViewBag.idkt },
+            success: function (response) {
                 var html = '';
-                $.each(result, function (key, item) {
+                $.each(response, function (key, item) {
                     html += '<tr>';
                     html += '<td>' + item.f_masv + '</td>';
                     html += '<td>' + item.f_holotvn + ' ' + item.f_tenvn + '</td>';
@@ -114,11 +98,12 @@
                 });
                 $('.tbody').html(html);
             },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
+            error: function (response) {
+                alert('Thất bại');
             }
         });
-    }
+    };
+
     function UploadFile() {
         var x = document.getElementById("divUploadFile");
         if (x.style.display === "none") {
@@ -126,5 +111,5 @@
         } else {
             x.style.display = "none";
         }
-    }
+    };
 </script>

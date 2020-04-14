@@ -12,7 +12,7 @@ namespace KhaoThiSoftware
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ajax").Include(
-                        "~/Scripts/jquery-1.10.2.js"));
+                        "~/Scripts/jquery.unobtrusive-ajax.min"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
