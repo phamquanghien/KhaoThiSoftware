@@ -31,7 +31,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         {
             var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
 
-            try
+            //try
             {
                 if (file.ContentLength > 0)
                 {
@@ -40,13 +40,13 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                     string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
                     file.SaveAs(_path);
                     DataTable dt = excelPro.ReadDataFromExcelFile(_path);
-                    DataColumn col = dt.Columns.Add("IdKyThi", typeof(Int32));
+                    dt.Columns.Add("KyThi", typeof(int));
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         //column IDKYTHi
                         dt.Rows[i][12] = idKyThi;
                     }
-                    //col.DefaultValue = idKyThi;
+                    
                     SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
                     bulkcopy.DestinationTableName = "DanhSachThis";
                     bulkcopy.ColumnMappings.Add(0, "f_masv");
@@ -69,11 +69,12 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 ViewBag.Message = "File Uploaded Successfully!!";
                 return RedirectToAction("Index", "DanhSachThi_Ad", new { id = idKyThi });
             }
-            catch
-            {
-                return View();
-            }
+            //catch
+            //{
+            //    return View();
+            //}
         }
+        
         public JsonResult GetData(int id)
         {
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).Take(1000).ToList();

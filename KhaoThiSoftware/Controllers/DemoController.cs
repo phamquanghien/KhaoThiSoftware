@@ -166,7 +166,18 @@ namespace KhaoThiSoftware.Controllers
 
         public ActionResult GetDataReport()
         {
-            return View();
+            List<Table> table = new List<Table>();
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Repport/GenerateBarcode.rpt")));
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+
+
+            return File(stream, "application/pdf", "Report.pdf");
         }
     }
 }
