@@ -9,7 +9,6 @@ using System.IO;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using KhaoThiSoftware.Models;
 using CrystalDecisions.CrystalReports.Engine;
 
 namespace KhaoThiSoftware.Controllers

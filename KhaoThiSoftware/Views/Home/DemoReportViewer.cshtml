@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "DemoReportViewer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DemoReportViewer</h2>
+@*<a href="~/Reports/ReportViewer.aspx">View Report</a>*@
+<div><a href="@Url.Action("ExportPDF")"> Report PDF </a></div> |
+<div><a href="@Url.Action("ExportWord")"> Report Word </a></div> |
+<div><a href="@Url.Action("ExportWord2")"> Report </a></div>

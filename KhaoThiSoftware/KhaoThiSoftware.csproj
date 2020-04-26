@@ -89,6 +89,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -210,6 +211,18 @@
       <DependentUpon>GenPhach.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\rpt\rptDanhSachPhach.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptDanhSachPhach.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rpt\rptPhachThi.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptPhachThi.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -270,6 +283,7 @@
     <Content Include="Views\Demo\GetData.cshtml" />
     <Content Include="Views\Demo\UploadFile.cshtml" />
     <Content Include="Views\Demo\Index.cshtml" />
+    <Content Include="Views\Home\DemoReportViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,6 +310,14 @@
     <EmbeddedResource Include="Reports\rpt\GenPhach.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GenPhach.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt\rptDanhSachPhach.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDanhSachPhach.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt\rptPhachThi.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptPhachThi.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

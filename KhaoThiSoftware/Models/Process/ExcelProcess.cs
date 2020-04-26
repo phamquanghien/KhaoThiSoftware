@@ -33,7 +33,7 @@ namespace KhaoThiSoftware.Models
 
                 data = ds.Tables[0];
             }
-            catch (Exception ex)
+            catch
             {
             }
             finally

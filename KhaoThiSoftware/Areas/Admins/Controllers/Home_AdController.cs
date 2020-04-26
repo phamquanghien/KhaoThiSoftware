@@ -11,7 +11,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         // GET: Admins/Home_Ad
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "KyThi_Ad", new { area = "Admins"});
         }
     }
 }
