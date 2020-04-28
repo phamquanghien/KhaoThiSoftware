@@ -24,6 +24,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
             ViewBag.sobanghi = model.Count;
             ViewBag.idkt = id;
+            ViewBag.tenKyThi = db.KyThis.Where(m => m.IdKyThi == id).First().TenKyThi;
             return View();
         }
         [HttpPost]
@@ -31,12 +32,12 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         {
             var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
 
-            //try
+            try
             {
                 if (file.ContentLength > 0)
                 {
-                    //string _FileName = maKyThi + DateTime.Now.ToString();
-                    string _FileName = Path.GetFileName(file.FileName);
+                    var dtNow = DateTime.Now;
+                    string _FileName = maKyThi + "-" + dtNow.Year + dtNow.Month + dtNow.Day + dtNow.Hour + dtNow.Minute + dtNow.Second + ".xls";
                     string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
                     file.SaveAs(_path);
                     DataTable dt = excelPro.ReadDataFromExcelFile(_path);
@@ -69,10 +70,10 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 ViewBag.Message = "File Uploaded Successfully!!";
                 return RedirectToAction("Index", "DanhSachThi_Ad", new { id = idKyThi });
             }
-            //catch
-            //{
-            //    return View();
-            //}
+            catch
+            {
+                return View("UpLoadFail");
+            }
         }
         
         public JsonResult GetData(int id)
