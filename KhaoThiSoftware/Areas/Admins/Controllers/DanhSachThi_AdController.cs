@@ -57,7 +57,6 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 return View("UpLoadFail");
             }
         }
-
         //nhap du lieu bo sung
         [HttpPost]
         public ActionResult AppendData(HttpPostedFileBase file, int? idKyThi)
@@ -67,7 +66,8 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 if (file.ContentLength > 0)
                 {
                     CopyDataFormExcel(file, idKyThi);
-                    if (db.DanhSachThis.Where(m => m.sobaodanh == 0).Count() == 0)
+                    //Neu chua co thong tin mon thi them vao
+                    if (db.DanhSachThis.Where(m => m.sobaodanh == 0 && m.IdKyThi == idKyThi).Count() == 0)
                     {
                         InsertDataMonHoc(idKyThi);
                     }
@@ -89,7 +89,6 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
 
         public ActionResult GeneratePhach(int? idkt)
         {
-
             if (idkt == null)
             {
                 return Json("Sinh phách thất bại. Lý do: Chưa chọn kỳ thi", JsonRequestBehavior.AllowGet);
@@ -101,26 +100,24 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             }
             else
             {
-                DataTable table = new DataTable();
-                table.Columns.Add("SoPhach", typeof(string));
-                table.Columns.Add("IdDanhSachThi", typeof(double));
-                table.Columns.Add("IdKyThi", typeof(int));
-                string[] arrCode = proLogic.GenBeatcodeWithQuantity(listDanhSachThi.Count, 5);
-                for (int i = 0; i < arrCode.Length; i++)
+                if (db.DanhSachPhachs.Where(m => m.IdKyThi == idkt).Count() == 0)
                 {
-                    table.Rows.Add(arrCode[i].ToString(), Convert.ToDouble(listDanhSachThi[i].IdDanhSachThi), idkt);
+                    var countPhach = InsertDataPhach(idkt);
+                    return Json("Sinh thành công " + countPhach + " phách!", JsonRequestBehavior.AllowGet);
                 }
-                var x = table.Rows.Count;
-                SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
-                bulkcopy.DestinationTableName = "DanhSachPhachs";
-                bulkcopy.ColumnMappings.Add(0, "SoPhach");
-                bulkcopy.ColumnMappings.Add(1, "IdDanhSachThi");
-                bulkcopy.ColumnMappings.Add(2, "IdKyThi");
-                con.Open();
-                bulkcopy.WriteToServer(table);
-                con.Close();
-                var countPhach = db.DanhSachPhachs.Where(m => m.IdKyThi == idkt).Select(m => m.SoPhach).Distinct().ToList().Count;
-                return Json("Sinh thành công " + countPhach + " phách!", JsonRequestBehavior.AllowGet);
+                else
+                {
+                    int countPhachBoSung = InsertDataPhachBoSung(idkt);
+                    //sinh them phach neu import them danh sach thi sinh
+                    if (countPhachBoSung > 0)
+                    {
+                        return Json("Sinh bổ sung thành công " + countPhachBoSung + " phách!", JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("Sinh phách của kỳ thi đã hoàn thành, vui lòng kiểm tra lại", JsonRequestBehavior.AllowGet);
+                    }
+                }
             }
         }
         
@@ -199,7 +196,6 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             con.Open();
             bulkcopy.WriteToServer(dt);
             con.Close();
-            //InsertDataMonHoc(idKyThi);
         }
 
         private void InsertDataMonHoc(int? id)
@@ -220,6 +216,84 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 db.DanhSachThis.Add(dst);
             }
             db.SaveChanges();
+        }
+
+        private int InsertDataPhach(int? id)
+        {
+            var listDanhSachThi = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
+            DataTable table = new DataTable();
+            table.Columns.Add("SoPhach", typeof(string));
+            table.Columns.Add("IdDanhSachThi", typeof(double));
+            table.Columns.Add("IdKyThi", typeof(int));
+            string[] arrCode = proLogic.GenBeatcodeWithQuantity(listDanhSachThi.Count, 5);
+            for (int i = 0; i < arrCode.Length; i++)
+            {
+                table.Rows.Add(arrCode[i].ToString(), Convert.ToDouble(listDanhSachThi[i].IdDanhSachThi), id);
+            }
+            //copy du lieu
+            CopyDataByBulk(table);
+            //var countPhach = db.DanhSachPhachs.Where(m => m.IdKyThi == id).Select(m => m.SoPhach).Distinct().ToList().Count;
+            var countPhach = table.Rows.Count;
+            return countPhach;
+        }
+
+        private int InsertDataPhachBoSung(int? id)
+        {
+            var lstThiSinhBoSung = (from dst in db.DanhSachThis
+                                    where ((dst.IdKyThi == id) && (!db.DanhSachPhachs.Any(m => m.IdDanhSachThi == dst.IdDanhSachThi)))
+                                    select new { idDST = dst.IdDanhSachThi }).ToList();
+            DataTable table = new DataTable();
+            table.Columns.Add("SoPhach", typeof(string));
+            table.Columns.Add("IdDanhSachThi", typeof(double));
+            table.Columns.Add("IdKyThi", typeof(int));
+            var lstThiSinhCoSan = (from dst in db.DanhSachThis
+                                   where ((dst.IdKyThi == id) && (db.DanhSachPhachs.Any(m => m.IdDanhSachThi == dst.IdDanhSachThi)))
+                                   select new { idDST = dst.IdDanhSachThi }).ToList();
+            string[] arrCode = proLogic.GenerateBeatcode(lstThiSinhCoSan.Count + 1, (lstThiSinhCoSan.Count + 1) + lstThiSinhBoSung.Count, 5);
+            for (int i = 0; i < arrCode.Length; i++)
+            {
+                table.Rows.Add(arrCode[i].ToString(), Convert.ToDouble(lstThiSinhBoSung[i].idDST), id);
+            }
+            //copy du lieu
+            CopyDataByBulk(table);
+            var countPhach = table.Rows.Count;
+            return countPhach;
+        }
+
+        private void AppendDataPhach(int? id)
+        {
+            var listDanhSachThi = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
+            DataTable table = new DataTable();
+            table.Columns.Add("SoPhach", typeof(string));
+            table.Columns.Add("IdDanhSachThi", typeof(double));
+            table.Columns.Add("IdKyThi", typeof(int));
+            string[] arrCode = proLogic.GenBeatcodeWithQuantity(listDanhSachThi.Count, 5);
+            for (int i = 0; i < arrCode.Length; i++)
+            {
+                table.Rows.Add(arrCode[i].ToString(), Convert.ToDouble(listDanhSachThi[i].IdDanhSachThi), id);
+            }
+            var x = table.Rows.Count;
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
+            bulkcopy.DestinationTableName = "DanhSachPhachs";
+            bulkcopy.ColumnMappings.Add(0, "SoPhach");
+            bulkcopy.ColumnMappings.Add(1, "IdDanhSachThi");
+            bulkcopy.ColumnMappings.Add(2, "IdKyThi");
+            con.Open();
+            bulkcopy.WriteToServer(table);
+            con.Close();
+            var countPhach = db.DanhSachPhachs.Where(m => m.IdKyThi == id).Select(m => m.SoPhach).Distinct().ToList().Count;
+        }
+
+        private void CopyDataByBulk(DataTable dt)
+        {
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
+            bulkcopy.DestinationTableName = "DanhSachPhachs";
+            bulkcopy.ColumnMappings.Add(0, "SoPhach");
+            bulkcopy.ColumnMappings.Add(1, "IdDanhSachThi");
+            bulkcopy.ColumnMappings.Add(2, "IdKyThi");
+            con.Open();
+            bulkcopy.WriteToServer(dt);
+            con.Close();
         }
     }
 }
