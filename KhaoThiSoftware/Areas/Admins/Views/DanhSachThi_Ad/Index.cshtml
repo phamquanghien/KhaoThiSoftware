@@ -7,8 +7,8 @@
 
 <h2 id="Message">@ViewBag.tenKyThi: @ViewBag.soThiSinh thí sinh, thi @ViewBag.soMonThi môn</h2>
 
-<div id="divUploadFile" style="display: none;">
-    @using (Html.BeginForm("UploadFile", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div id="OverwriteData" style="display: none;">
+    @using (Html.BeginForm("OverwriteData", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
             <input type="text" name="idKyThi" value="@ViewBag.idkt" hidden />
@@ -17,8 +17,8 @@
         </div>
     }
 </div>
-<div id="divUploadFile2" style="display: none;">
-    @using (Html.BeginForm("UploadFile2", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div id="AppendData" style="display: none;">
+    @using (Html.BeginForm("AppendData", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
             <input type="text" name="idKyThi" value="@ViewBag.idkt" hidden />
@@ -60,7 +60,6 @@
 @Scripts.Render("~/bundles/ajax")
 <script>
     $(document).ready(function () {
-        alert('Loaded Form');
     });
 
     $('#btnUploadFile').click(function () {
@@ -118,8 +117,8 @@
     function UploadFile() {
         if (@ViewBag.soThiSinh > 0) {
             var checkUpload = confirm("Xóa thông tin thí sinh để nhập lại");
-            var x = document.getElementById("divUploadFile");
-            var y = document.getElementById("divUploadFile2");
+            var x = document.getElementById("OverwriteData");
+            var y = document.getElementById("AppendData");
             if (checkUpload == true) {
 
                 if (x.style.display === "none") {
@@ -139,7 +138,7 @@
             }
         }
         else {
-            var y = document.getElementById("divUploadFile2");
+            var y = document.getElementById("AppendData");
             if (y.style.display === "none") {
                 y.style.display = "block";
             } else {

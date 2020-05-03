@@ -33,7 +33,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         }
         //xoa du lieu di nhap lai
         [HttpPost]
-        public ActionResult UploadFile(HttpPostedFileBase file, int? idKyThi)
+        public ActionResult OverwriteData(HttpPostedFileBase file, int? idKyThi)
         {
             // delete data from Danh sach thi
             db.DanhSachThis.RemoveRange(db.DanhSachThis.Where(m => m.IdKyThi == idKyThi));
@@ -106,7 +106,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
 
         //nhap du lieu bo sung
         [HttpPost]
-        public ActionResult UploadFile2(HttpPostedFileBase file, int? idKyThi)
+        public ActionResult AppendData(HttpPostedFileBase file, int? idKyThi)
         {
             var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
 
