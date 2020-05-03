@@ -41,59 +41,13 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             // delete data from Danh sach phach
             db.DanhSachPhachs.RemoveRange(db.DanhSachPhachs.Where(m => m.IdKyThi == idKyThi));
             db.SaveChanges();
-            var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
 
             try
             {
                 if (file.ContentLength > 0)
                 {
-                    var dtNow = DateTime.Now;
-                    string _FileName = maKyThi + "-" + dtNow.Year + dtNow.Month + dtNow.Day + dtNow.Hour + dtNow.Minute + dtNow.Second + ".xls";
-                    string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
-                    file.SaveAs(_path);
-                    DataTable dt = excelPro.ReadDataFromExcelFile(_path);
-                    dt.Columns.Add("KyThi", typeof(int));
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        //column IDKYTHi
-                        dt.Rows[i][12] = idKyThi;
-                    }
-                    
-                    SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
-                    bulkcopy.DestinationTableName = "DanhSachThis";
-                    bulkcopy.ColumnMappings.Add(0, "f_masv");
-                    bulkcopy.ColumnMappings.Add(1, "f_mamh");
-                    bulkcopy.ColumnMappings.Add(2, "f_holotvn");
-                    bulkcopy.ColumnMappings.Add(3, "f_tenvn");
-                    bulkcopy.ColumnMappings.Add(4, "f_ngaysinh");
-                    bulkcopy.ColumnMappings.Add(5, "sobaodanh");
-                    bulkcopy.ColumnMappings.Add(6, "f_tenlop");
-                    bulkcopy.ColumnMappings.Add(7, "f_tenmhvn");
-                    bulkcopy.ColumnMappings.Add(8, "ngaythi");
-                    bulkcopy.ColumnMappings.Add(9, "phongthi");
-                    bulkcopy.ColumnMappings.Add(10, "tietbatdau");
-                    bulkcopy.ColumnMappings.Add(11, "sotiet");
-                    bulkcopy.ColumnMappings.Add(12, "IdKyThi");
-                    con.Open();
-                    bulkcopy.WriteToServer(dt);
-                    con.Close();
-
-                    //them du lieu mon thi vao danh sach thi
-                    var model = db.DanhSachThis.Where(m => m.IdKyThi == idKyThi).Select(m => new { m.f_mamh, m.phongthi, m.ngaythi, m.tietbatdau, m.sotiet, m.IdKyThi, m.f_tenmhvn }).Distinct().ToList();
-                    for (int i = 0; i < model.Count; i++)
-                    {
-                        DanhSachThi dst = new DanhSachThi();
-                        dst.f_tenmhvn = model[i].f_tenmhvn;
-                        dst.f_masv = model[i].f_mamh;
-                        dst.f_holotvn = model[i].phongthi;
-                        dst.ngaythi = model[i].ngaythi;
-                        dst.tietbatdau = model[i].tietbatdau;
-                        dst.sotiet = model[i].sotiet;
-                        dst.IdKyThi = model[i].IdKyThi;
-                        dst.sobaodanh = 0;
-                        db.DanhSachThis.Add(dst);
-                    }
-                    db.SaveChanges();
+                    CopyDataFormExcel(file, idKyThi);
+                    InsertDataMonHoc(idKyThi);
                 }
 
                 return RedirectToAction("Index", "DanhSachThi_Ad", new { id = idKyThi });
@@ -108,42 +62,15 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         [HttpPost]
         public ActionResult AppendData(HttpPostedFileBase file, int? idKyThi)
         {
-            var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
-
             try
             {
                 if (file.ContentLength > 0)
                 {
-                    var dtNow = DateTime.Now;
-                    string _FileName = maKyThi + "-" + dtNow.Year + dtNow.Month + dtNow.Day + dtNow.Hour + dtNow.Minute + dtNow.Second + ".xls";
-                    string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
-                    file.SaveAs(_path);
-                    DataTable dt = excelPro.ReadDataFromExcelFile(_path);
-                    dt.Columns.Add("KyThi", typeof(int));
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                    CopyDataFormExcel(file, idKyThi);
+                    if (db.DanhSachThis.Where(m => m.sobaodanh == 0).Count() == 0)
                     {
-                        //column IDKYTHi
-                        dt.Rows[i][12] = idKyThi;
+                        InsertDataMonHoc(idKyThi);
                     }
-
-                    SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
-                    bulkcopy.DestinationTableName = "DanhSachThis";
-                    bulkcopy.ColumnMappings.Add(0, "f_masv");
-                    bulkcopy.ColumnMappings.Add(1, "f_mamh");
-                    bulkcopy.ColumnMappings.Add(2, "f_holotvn");
-                    bulkcopy.ColumnMappings.Add(3, "f_tenvn");
-                    bulkcopy.ColumnMappings.Add(4, "f_ngaysinh");
-                    bulkcopy.ColumnMappings.Add(5, "sobaodanh");
-                    bulkcopy.ColumnMappings.Add(6, "f_tenlop");
-                    bulkcopy.ColumnMappings.Add(7, "f_tenmhvn");
-                    bulkcopy.ColumnMappings.Add(8, "ngaythi");
-                    bulkcopy.ColumnMappings.Add(9, "phongthi");
-                    bulkcopy.ColumnMappings.Add(10, "tietbatdau");
-                    bulkcopy.ColumnMappings.Add(11, "sotiet");
-                    bulkcopy.ColumnMappings.Add(12, "IdKyThi");
-                    con.Open();
-                    bulkcopy.WriteToServer(dt);
-                    con.Close();
                 }
                 ViewBag.Message = "File Uploaded Successfully!!";
                 return RedirectToAction("Index", "DanhSachThi_Ad", new { id = idKyThi });
@@ -160,7 +87,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GenPhach(int? idkt)
+        public ActionResult GeneratePhach(int? idkt)
         {
 
             if (idkt == null)
@@ -238,6 +165,61 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             {
                 return RedirectToAction("Index", "KyThi_Ad");
             }
+        }
+
+        private void CopyDataFormExcel(HttpPostedFileBase file, int? idKyThi)
+        {
+            var maKyThi = db.KyThis.Find(idKyThi).MaKyThi;
+            var dtNow = DateTime.Now;
+            string _FileName = maKyThi + "-" + dtNow.Year + dtNow.Month + dtNow.Day + dtNow.Hour + dtNow.Minute + dtNow.Second + ".xls";
+            string _path = Path.Combine(Server.MapPath("~/Uploads/Excels"), _FileName);
+            file.SaveAs(_path);
+            DataTable dt = excelPro.ReadDataFromExcelFile(_path);
+            dt.Columns.Add("KyThi", typeof(int));
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dt.Rows[i][12] = idKyThi;
+            }
+
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(con);
+            bulkcopy.DestinationTableName = "DanhSachThis";
+            bulkcopy.ColumnMappings.Add(0, "f_masv");
+            bulkcopy.ColumnMappings.Add(1, "f_mamh");
+            bulkcopy.ColumnMappings.Add(2, "f_holotvn");
+            bulkcopy.ColumnMappings.Add(3, "f_tenvn");
+            bulkcopy.ColumnMappings.Add(4, "f_ngaysinh");
+            bulkcopy.ColumnMappings.Add(5, "sobaodanh");
+            bulkcopy.ColumnMappings.Add(6, "f_tenlop");
+            bulkcopy.ColumnMappings.Add(7, "f_tenmhvn");
+            bulkcopy.ColumnMappings.Add(8, "ngaythi");
+            bulkcopy.ColumnMappings.Add(9, "phongthi");
+            bulkcopy.ColumnMappings.Add(10, "tietbatdau");
+            bulkcopy.ColumnMappings.Add(11, "sotiet");
+            bulkcopy.ColumnMappings.Add(12, "IdKyThi");
+            con.Open();
+            bulkcopy.WriteToServer(dt);
+            con.Close();
+            //InsertDataMonHoc(idKyThi);
+        }
+
+        private void InsertDataMonHoc(int? id)
+        {
+            var db = new KhaoThiDBContext();
+            var model = db.DanhSachThis.Where(m => m.IdKyThi == id).Select(m => new { m.f_mamh, m.phongthi, m.ngaythi, m.tietbatdau, m.sotiet, m.IdKyThi, m.f_tenmhvn }).Distinct().ToList();
+            for (int i = 0; i < model.Count; i++)
+            {
+                DanhSachThi dst = new DanhSachThi();
+                dst.f_tenmhvn = model[i].f_tenmhvn;
+                dst.f_masv = model[i].f_mamh;
+                dst.f_holotvn = model[i].phongthi;
+                dst.ngaythi = model[i].ngaythi;
+                dst.tietbatdau = model[i].tietbatdau;
+                dst.sotiet = model[i].sotiet;
+                dst.IdKyThi = model[i].IdKyThi;
+                dst.sobaodanh = 0;
+                db.DanhSachThis.Add(dst);
+            }
+            db.SaveChanges();
         }
     }
 }

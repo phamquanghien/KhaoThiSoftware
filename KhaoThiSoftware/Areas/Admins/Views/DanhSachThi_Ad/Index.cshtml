@@ -70,16 +70,16 @@
     });
 
     $('#btnGenPhach').click(function () {
-        GenPhach();
+        GeneratePhach();
     });
 
     $('#btnGhepPhach').click(function () {
         alert('Chức năng đang xây dựng');
     });
 
-    function GenPhach() {
+    function GeneratePhach() {
         $.ajax({
-            url: "/Admins/DanhSachThi_Ad/GenPhach",
+            url: "/Admins/DanhSachThi_Ad/GeneratePhach",
             type: "GET",
             data: { idkt: @ViewBag.idkt },
             success: function (response) {
