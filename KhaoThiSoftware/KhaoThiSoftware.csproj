@@ -190,6 +190,10 @@
     <Compile Include="Migrations\202004110833593_Create_Database.Designer.cs">
       <DependentUpon>202004110833593_Create_Database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs" />
+    <Compile Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.Designer.cs">
+      <DependentUpon>202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\DanhSachPhach.cs" />
@@ -220,6 +224,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptDanhSachPhach.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rpt\rptDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptDemo.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\rpt\rptPhachThi.cs">
@@ -268,6 +278,7 @@
     <Content Include="Datasets\KhaoThiDataset.xss">
       <DependentUpon>KhaoThiDataset.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\KhaoThiPublish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -282,7 +293,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -297,10 +310,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Demo\GetData.cshtml" />
-    <Content Include="Views\Demo\UploadFile.cshtml" />
     <Content Include="Views\Demo\Index.cshtml" />
     <Content Include="Views\Home\DemoReportViewer.cshtml" />
+    <Content Include="Views\Demo\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -320,6 +332,9 @@
     <EmbeddedResource Include="Migrations\202004110833593_Create_Database.resx">
       <DependentUpon>202004110833593_Create_Database.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.resx">
+      <DependentUpon>202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt\GenerateBarcode.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GenerateBarcode.cs</LastGenOutput>
@@ -331,6 +346,10 @@
     <EmbeddedResource Include="Reports\rpt\rptDanhSachPhach.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptDanhSachPhach.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt\rptDemo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptDemo.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt\rptPhachThi.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

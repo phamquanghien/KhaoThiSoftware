@@ -5,10 +5,20 @@
     Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2 id="Message">@ViewBag.tenKyThi: @ViewBag.sobanghi thí sinh</h2>
+<h2 id="Message">@ViewBag.tenKyThi: @ViewBag.soThiSinh thí sinh, thi @ViewBag.soMonThi môn</h2>
 
 <div id="divUploadFile" style="display: none;">
     @using (Html.BeginForm("UploadFile", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            <input type="text" name="idKyThi" value="@ViewBag.idkt" hidden />
+            @Html.TextBox("file", "", new { type = "file" }) <br />
+            <input type="submit" value="Upload" />
+        </div>
+    }
+</div>
+<div id="divUploadFile2" style="display: none;">
+    @using (Html.BeginForm("UploadFile2", "DanhSachThi_Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div>
             <input type="text" name="idKyThi" value="@ViewBag.idkt" hidden />
@@ -23,8 +33,11 @@
     <input type="button" value="Upload File" id="btnUploadFile" class="btn btn-primary" />
     <input type="button" value="Lấy dữ liệu" id="btnGetData" class="btn btn-primary" />
     <input type="button" value="Sinh phách" id="btnGenPhach" class="btn btn-primary" />
+    @Html.ActionLink("Download File Phách", "ExportWord", "DanhSachThi_Ad", new { idkt = ViewBag.idkt }, new { @class = "btn btn-success" })
     <input type="button" value="Ghép phách" id="btnGhepPhach" class="btn btn-primary" />
+
 </p>
+
 <table class="table" id="tblStudent">
     <tr>
         <th>
@@ -40,15 +53,14 @@
             <label>Tên môn học</label>
         </th>
     </tr>
-    <tbody class="tbody">
-        
-    </tbody>
+    <tbody class="tbody"></tbody>
 
 </table>
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/ajax")
 <script>
     $(document).ready(function () {
+        alert('Loaded Form');
     });
 
     $('#btnUploadFile').click(function () {
@@ -104,11 +116,36 @@
     };
 
     function UploadFile() {
-        var x = document.getElementById("divUploadFile");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
+        if (@ViewBag.soThiSinh > 0) {
+            var checkUpload = confirm("Xóa thông tin thí sinh để nhập lại");
+            var x = document.getElementById("divUploadFile");
+            var y = document.getElementById("divUploadFile2");
+            if (checkUpload == true) {
+
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                    y.style.display = "none";
+                } else {
+                    x.style.display = "none";
+                }
+            } else {
+
+                if (y.style.display === "none") {
+                    y.style.display = "block";
+                    x.style.display = "none";
+                } else {
+                    y.style.display = "none";
+                }
+            }
+        }
+        else {
+            var y = document.getElementById("divUploadFile2");
+            if (y.style.display === "none") {
+                y.style.display = "block";
+            } else {
+                y.style.display = "none";
+            }
         }
     };
+
 </script>

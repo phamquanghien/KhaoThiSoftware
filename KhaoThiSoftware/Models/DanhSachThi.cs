@@ -21,7 +21,7 @@ namespace KhaoThiSoftware.Models
 
         public string f_ngaysinh { get; set; }
 
-        public int sobaodanh { get; set; }
+        public int? sobaodanh { get; set; }
 
         public string f_tenlop { get; set; }
 

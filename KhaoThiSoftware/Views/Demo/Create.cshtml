@@ -1,0 +1,15 @@
+﻿@model KhaoThiSoftware.Models.DanhSachThi
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<input type="button" id="btnDemo" value="Click me to test Java Script" />
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/ajax")
+<script>
+    $('#btnDemo').click(function () {
+        alert('Test javaScript');
+    });
+</script>
