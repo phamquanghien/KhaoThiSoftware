@@ -9,7 +9,7 @@ namespace KhaoThiSoftware.Models
     public partial class DanhSachThi
     {
         [Key]
-        public int IdDanhSachThi { get; set; }
+        public long IdDanhSachThi { get; set; }
 
         public string f_masv { get; set; }
 
@@ -27,13 +27,13 @@ namespace KhaoThiSoftware.Models
 
         public string f_tenmhvn { get; set; }
 
-        public DateTime ngaythi { get; set; }
+        public DateTime? ngaythi { get; set; }
 
         public string phongthi { get; set; }
 
-        public int tietbatdau { get; set; }
+        public byte? tietbatdau { get; set; }
 
-        public int sotiet { get; set; }
+        public byte? sotiet { get; set; }
         public int IdKyThi { get; set; }
     }
 }

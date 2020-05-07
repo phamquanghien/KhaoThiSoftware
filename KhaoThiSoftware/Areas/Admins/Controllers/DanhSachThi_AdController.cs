@@ -12,6 +12,7 @@ using CrystalDecisions.Shared;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DanhSachThi_AdController : Controller
     {
         KhaoThiDBContext db = new KhaoThiDBContext();

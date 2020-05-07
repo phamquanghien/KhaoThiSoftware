@@ -8,11 +8,11 @@ namespace KhaoThiSoftware.Areas.Lectures.Controllers
 {
     public class Home_LeController : Controller
     {
-        [Authorize(Roles = "")]
+        [Authorize(Roles = "Lecture")]
         // GET: Lectures/Home_Le
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "KyThi_Le");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace KhaoThiSoftware.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202004110833593_Create_Database"; }
+            get { return "202005071444466_Create_Database"; }
         }
         
         string IMigrationMetadata.Source

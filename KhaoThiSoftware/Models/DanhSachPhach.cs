@@ -9,7 +9,7 @@ namespace KhaoThiSoftware.Models
         [Key]
         public long IdDanhSachPhach { get; set; }
         public string SoPhach { get; set; }
-        public double IdDanhSachThi { get; set; }
+        public long IdDanhSachThi { get; set; }
         public int IdKyThi { get; set; }
     }
 }

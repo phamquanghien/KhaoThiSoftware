@@ -1,9 +1,6 @@
 namespace KhaoThiSoftware.Models
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class KhaoThiDBContext : DbContext
     {
@@ -17,6 +14,8 @@ namespace KhaoThiSoftware.Models
         public virtual DbSet<DanhSachThi> DanhSachThis { get; set; }
         public virtual DbSet<KyThi> KyThis { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<KetQuaThi> KetQuaThis { get; set; }
+        public virtual DbSet<TestNhapDiem> TestNhapDiems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -31,6 +30,10 @@ namespace KhaoThiSoftware.Models
             modelBuilder.Entity<Account>()
                 .Property(e => e.RoleID)
                 .IsUnicode(false);
+
+            //modelBuilder.Entity<DanhSachPhach>()
+            //    .Property(e => e.IdDanhSachPhach)
+            //    .Identity(false);
 
             modelBuilder.Entity<KyThi>()
                 .Property(e => e.MaKyThi)

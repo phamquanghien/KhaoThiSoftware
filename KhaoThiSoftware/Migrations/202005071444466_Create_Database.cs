@@ -23,7 +23,7 @@ namespace KhaoThiSoftware.Migrations
                     {
                         IdDanhSachPhach = c.Long(nullable: false, identity: true),
                         SoPhach = c.String(),
-                        IdDanhSachThi = c.Double(nullable: false),
+                        IdDanhSachThi = c.Long(nullable: false),
                         IdKyThi = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.IdDanhSachPhach);
@@ -32,19 +32,19 @@ namespace KhaoThiSoftware.Migrations
                 "dbo.DanhSachThis",
                 c => new
                     {
-                        IdDanhSachThi = c.Int(nullable: false, identity: true),
+                        IdDanhSachThi = c.Long(nullable: false, identity: true),
                         f_masv = c.String(),
                         f_mamh = c.String(),
                         f_holotvn = c.String(),
                         f_tenvn = c.String(),
                         f_ngaysinh = c.String(),
-                        sobaodanh = c.Int(nullable: false),
+                        sobaodanh = c.Int(),
                         f_tenlop = c.String(),
                         f_tenmhvn = c.String(),
-                        ngaythi = c.DateTime(nullable: false),
+                        ngaythi = c.DateTime(),
                         phongthi = c.String(),
-                        tietbatdau = c.Int(nullable: false),
-                        sotiet = c.Int(nullable: false),
+                        tietbatdau = c.Byte(),
+                        sotiet = c.Byte(),
                         IdKyThi = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.IdDanhSachThi);
@@ -65,7 +65,7 @@ namespace KhaoThiSoftware.Migrations
                 .PrimaryKey(t => t.IdKyThi);
             
             CreateTable(
-                "dbo.Role",
+                "dbo.Roles",
                 c => new
                     {
                         RoleID = c.String(nullable: false, maxLength: 10, unicode: false),
@@ -77,7 +77,7 @@ namespace KhaoThiSoftware.Migrations
         
         public override void Down()
         {
-            DropTable("dbo.Role");
+            DropTable("dbo.Roles");
             DropTable("dbo.KyThis");
             DropTable("dbo.DanhSachThis");
             DropTable("dbo.DanhSachPhachs");

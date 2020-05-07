@@ -6,6 +6,7 @@ using KhaoThiSoftware.Models;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class Role_AdController : Controller
     {
         private KhaoThiDBContext db = new KhaoThiDBContext();

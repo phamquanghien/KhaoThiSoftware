@@ -54,7 +54,7 @@ namespace KhaoThiSoftware.Models
                                  join role in db.Roles
                                  on user.RoleID equals role.RoleID
                                  where user.UserName == username
-                                 select role.RoleName).ToArray();
+                                 select role.RoleID).ToArray();
                 return userRoles;
             }
         }
