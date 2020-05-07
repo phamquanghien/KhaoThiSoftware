@@ -5,15 +5,13 @@
     Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.ThongBao</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>KyThi</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.MaKyThi)
+            <label>Mã kỳ thi</label>:
         </dt>
 
         <dd>
@@ -21,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TenKyThi)
+            <label>Tên kỳ thi</label>:
         </dt>
 
         <dd>
@@ -29,7 +27,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NgayTao)
+            <label>Ngày tạo</label>:
         </dt>
 
         <dd>
@@ -37,7 +35,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NguoiTao)
+            <label>Người tạo</label>:
         </dt>
 
         <dd>
@@ -45,27 +43,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ChuThich)
+            <label>Chú thích</label>:
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.ChuThich)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isDelete)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isDelete)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
         </dd>
 
     </dl>
@@ -74,8 +56,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            @Html.ActionLink("Danh sách kỳ thi", "Index", null, new { @class = "btn btn-success"})
         </div>
     }
 </div>

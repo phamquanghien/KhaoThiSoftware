@@ -1,0 +1,37 @@
+﻿@model KhaoThiSoftware.Models.Role
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admins/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>@ViewBag.ThongBao</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoleID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RoleName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa thông tin" class="btn btn-primary" /> |
+            @Html.ActionLink("Danh sách quyền hạn", "Index", null, new { @class = "btn btn-success"})
+        </div>
+    }
+</div>

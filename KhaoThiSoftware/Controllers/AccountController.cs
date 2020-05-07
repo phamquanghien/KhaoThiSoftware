@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using KhaoThiSoftware.Models;
 using System.Web.Security;
@@ -11,28 +8,48 @@ namespace KhaoThiSoftware.Controllers
     public class AccountController : Controller
     {
         StringProcess strPro = new StringProcess();
-        public ActionResult Create()
+        public ActionResult ResetPass()
         {
             using (var db = new KhaoThiDBContext())
             {
-                if (db.Accounts.Count() == 0)
-                {
-                    var role = new Role();
-                    role.RoleID = "Admin";
-                    role.RoleName = "Admin";
-                    db.Roles.Add(role);
-                    db.SaveChanges();
-                    var acc = new Account();
-                    acc.UserName = "admin";
-                    acc.Password = strPro.GetMD5("123456");
-                    acc.RoleID = "Admin";
-                    db.Accounts.Add(acc);
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Index", "Home");
+                var account = db.Accounts.Find("Admin");
+                account.Password = strPro.GetMD5("123456");
+                account.ConfirmPassword = account.Password;
+                db.SaveChanges();
             }
+            
+            return RedirectToAction("Index", "Home_Ad");
         }
-
+        public ActionResult Create()
+        {
+            try
+            {
+                using (var db = new KhaoThiDBContext())
+                {
+                    if (db.Roles.Count() == 0)
+                    {
+                        var role = new Role();
+                        role.RoleID = "Admin";
+                        role.RoleName = "Admin";
+                        db.Roles.Add(role);
+                        db.SaveChanges();
+                    }
+                    if (db.Accounts.Count() == 0)
+                    {
+                        var acc = new Account();
+                        acc.UserName = "admin";
+                        acc.Password = strPro.GetMD5("123456");
+                        acc.ConfirmPassword = acc.Password;
+                        acc.RoleID = "Admin";
+                        db.Accounts.Add(acc);
+                        db.SaveChanges();
+                    }
+                    
+                }
+            }
+            catch {}
+            return RedirectToAction("Index", "Home");
+        }
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -43,21 +60,29 @@ namespace KhaoThiSoftware.Controllers
         [HttpPost]
         public ActionResult Login(Account acc, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                using (var db = new KhaoThiDBContext())
+                if (!string.IsNullOrEmpty(acc.UserName) && !string.IsNullOrEmpty(acc.Password))
                 {
-                    var passToMD5 = strPro.GetMD5(acc.Password);
-                    var account = db.Accounts.Where(m => m.UserName.Equals(acc.UserName) && m.Password.Equals(passToMD5)).Count();
-                    if (account == 1)
+                    using (var db = new KhaoThiDBContext())
                     {
-                        FormsAuthentication.SetAuthCookie(acc.UserName, false);
-                        Session["idUser"] = acc.UserName;
-                        return RedirectToLocal(returnUrl);
+                        var passToMD5 = strPro.GetMD5(acc.Password);
+                        var account = db.Accounts.Where(m => m.UserName.Equals(acc.UserName) && m.Password.Equals(passToMD5)).Count();
+                        if (account == 1)
+                        {
+                            FormsAuthentication.SetAuthCookie(acc.UserName, false);
+                            Session["idUser"] = acc.UserName;
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
                 }
+                ModelState.AddModelError("", "Thông tin đăng nhập chưa chính xác");
             }
-            ModelState.AddModelError("", "invalid Username or Password");
+            catch
+            {
+                ModelState.AddModelError("", "");
+            }
+            
             return View(acc);
         }
         public ActionResult Logout()

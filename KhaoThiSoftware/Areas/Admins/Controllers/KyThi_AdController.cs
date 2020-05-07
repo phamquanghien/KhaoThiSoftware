@@ -15,7 +15,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         // GET: Admins/KyThi_Ad
         public ActionResult Index()
         {
-            return View(db.KyThis.ToList());
+            return View(db.KyThis.Where(m => m.isDelete == false).ToList());
         }
         
         // GET: Admins/KyThi_Ad/Create
@@ -55,7 +55,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             KyThi kyThi = db.KyThis.Find(id);
             if (kyThi == null)
             {
-                return HttpNotFound();
+                return View("~/Views/Shared/404Notfound.cshtml");
             }
             return View(kyThi);
         }
@@ -84,9 +84,18 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             KyThi kyThi = db.KyThis.Find(id);
-            if (kyThi == null)
+            if (kyThi == null || kyThi.isDelete == true)
             {
-                return HttpNotFound();
+                return View("~/Views/Shared/404Notfound.cshtml");
+            }
+            var check = db.DanhSachThis.Where(m => m.IdKyThi == id).Count();
+            if (check > 0)
+            {
+                ViewBag.ThongBao = "Kỳ thi đang có dữ liệu nếu xóa kỳ thi sẽ xóa toàn bộ dữ liệu liên quan. Bạn có muốn xóa kỳ thi không?";
+            }
+            else
+            {
+                ViewBag.ThongBao = "Bạn có muốn xóa kỳ thi không?";
             }
             return View(kyThi);
         }
@@ -96,9 +105,18 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var check = db.DanhSachThis.Where(m => m.IdKyThi == id).Count();
             KyThi kyThi = db.KyThis.Find(id);
-            db.KyThis.Remove(kyThi);
-            db.SaveChanges();
+            if (check > 0)
+            {
+                kyThi.isDelete = true;
+                db.SaveChanges();
+            }
+            else
+            {
+                db.KyThis.Remove(kyThi);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

@@ -172,9 +172,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admins\AdminsAreaRegistration.cs" />
+    <Compile Include="Areas\Admins\Controllers\Account_AdController.cs" />
     <Compile Include="Areas\Admins\Controllers\DanhSachThi_AdController.cs" />
     <Compile Include="Areas\Admins\Controllers\Home_AdController.cs" />
     <Compile Include="Areas\Admins\Controllers\KyThi_AdController.cs" />
+    <Compile Include="Areas\Admins\Controllers\Role_AdController.cs" />
+    <Compile Include="Areas\Lectures\Controllers\Home_LeController.cs" />
+    <Compile Include="Areas\Lectures\LecturesAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,6 +197,10 @@
     <Compile Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs" />
     <Compile Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.Designer.cs">
       <DependentUpon>202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005070417146_Alter_Table_Name_Roles.cs" />
+    <Compile Include="Migrations\202005070417146_Alter_Table_Name_Roles.Designer.cs">
+      <DependentUpon>202005070417146_Alter_Table_Name_Roles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -270,6 +278,17 @@
       <DependentUpon>KhaoThiDataset.xsd</DependentUpon>
     </Content>
     <Content Include="Areas\Admins\Views\DanhSachThi_Ad\UpLoadFail.cshtml" />
+    <Content Include="Areas\Lectures\Views\web.config" />
+    <Content Include="Areas\Lectures\Views\Shared\_LayoutLe.cshtml" />
+    <Content Include="Areas\Lectures\Views\Home_Le\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\Account_Ad\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\Account_Ad\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\Account_Ad\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\Account_Ad\ChangePassWord.cshtml" />
+    <Content Include="Areas\Admins\Views\Role_Ad\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\Role_Ad\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\Role_Ad\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\Role_Ad\Index.cshtml" />
     <None Include="Datasets\KhaoThiDataset.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -313,12 +332,14 @@
     <Content Include="Views\Demo\Index.cshtml" />
     <Content Include="Views\Home\DemoReportViewer.cshtml" />
     <Content Include="Views\Demo\Create.cshtml" />
+    <Content Include="Views\Shared\404Notfound.cshtml" />
+    <Content Include="Uploads\Excels\FileMau.xls" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admins\Models\" />
+    <Folder Include="Areas\Lectures\Models\" />
     <Folder Include="Scripts\Report\" />
-    <Folder Include="Uploads\Excels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -334,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005030919503_Update_Column_DanhSachThi_SoBaoDanh.resx">
       <DependentUpon>202005030919503_Update_Column_DanhSachThi_SoBaoDanh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005070417146_Alter_Table_Name_Roles.resx">
+      <DependentUpon>202005070417146_Alter_Table_Name_Roles.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt\GenerateBarcode.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using KhaoThiSoftware.Models;
-using System.Data.OleDb;
 using System.Data;
 using System.Web;
 using System.IO;
@@ -24,6 +23,11 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         public ActionResult Index(int? id)
         {
             if (id == null) return RedirectToAction("Index", "KyThi_Ad");
+            var checkKyThi = db.KyThis.Where(m => m.IdKyThi == id && m.isDelete == false).Count();
+            if (checkKyThi < 1)
+            {
+                return View("~/Views/Shared/404Notfound.cshtml");
+            }
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
             ViewBag.soThiSinh = model.Where(m => m.sobaodanh!=0).ToList().Count;
             ViewBag.soMonThi = model.Where(m => m.sobaodanh == 0).ToList().Count;
@@ -85,6 +89,14 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
         {
             var model = db.DanhSachThis.Where(m => m.IdKyThi == id).Take(1000).ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetFileMau()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/Excels/";
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path + "FileMau.xls");
+            string fileName = "FileMau.xls";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
         public ActionResult GeneratePhach(int? idkt)

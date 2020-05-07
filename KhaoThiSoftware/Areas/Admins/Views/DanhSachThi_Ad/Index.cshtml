@@ -31,7 +31,8 @@
 <p>
     @Html.ActionLink("Danh sách đợt thi", "Index", "KyThi_Ad", null, new { @class = "btn btn-success" })
     <input type="button" value="Upload File" id="btnUploadFile" class="btn btn-primary" />
-    <input type="button" value="Lấy dữ liệu" id="btnGetData" class="btn btn-primary" />
+    @*<input type="button" value="Lấy dữ liệu" id="btnGetData" class="btn btn-primary" />*@
+    @Html.ActionLink("Download file mẫu", "GetFileMau", null, new { @class = "btn btn-success"})
     <input type="button" value="Sinh phách" id="btnGenPhach" class="btn btn-primary" />
     @Html.ActionLink("Download File Phách", "ExportWord", "DanhSachThi_Ad", new { idkt = ViewBag.idkt }, new { @class = "btn btn-success" })
     <input type="button" value="Ghép phách" id="btnGhepPhach" class="btn btn-primary" />
