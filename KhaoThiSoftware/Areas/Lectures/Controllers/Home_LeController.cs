@@ -12,7 +12,7 @@ namespace KhaoThiSoftware.Areas.Lectures.Controllers
         // GET: Lectures/Home_Le
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "KyThi_Le");
+            return RedirectToAction("Index", "KyThi_Le", new { Area = "Lectures" });
         }
     }
 }
