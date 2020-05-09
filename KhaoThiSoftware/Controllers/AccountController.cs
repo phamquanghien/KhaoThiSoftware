@@ -65,11 +65,11 @@ namespace KhaoThiSoftware.Controllers
         {
             if (CheckSession() == 1)
             {
-                return RedirectToAction("Index", "Home_Ad", new { Areas = "Admins" });
+                return RedirectToAction("Index", "Home_Ad", new { Area = "Admins" });
             }
             else if (CheckSession() == 2)
             {
-                return RedirectToAction("Index", "Home_Le", new { Areas = "Lectures" });
+                return RedirectToAction("Index", "Home_Le", new { Area = "Lectures" });
             }
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -109,6 +109,7 @@ namespace KhaoThiSoftware.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            Session["idUser"] = null;
             return RedirectToAction("Login", "Account");
         }
         

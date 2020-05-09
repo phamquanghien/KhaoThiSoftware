@@ -139,7 +139,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                          join kt in db.KyThis
                          on tkp.IdKyThi equals kt.IdKyThi
                          where tkp.IdKyThi == id
-                         
+                         orderby tkp.PhachBatDau descending
                          select new {
                              tenKyThi = kt.TenKyThi,
                              tenMonThi = tkp.TenMonThi,
@@ -160,7 +160,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             rpt.Load();
             rpt.SetDataSource(dt);
             Stream s = rpt.ExportToStream(ExportFormatType.WordForWindows);
-            return File(s, "application/docx", "Report.doc");
+            return File(s, "application/docx", "ThongKePhach.doc");
         }
 
         protected override void Dispose(bool disposing)

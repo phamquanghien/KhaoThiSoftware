@@ -444,7 +444,7 @@ namespace KhaoThiSoftware.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DanhSachPhachRow AddDanhSachPhachRow(string STT, string MaSinhVien, string HoTenSV, string MaPhach, string TenKyThi, string MonThi) {
+            public DanhSachPhachRow AddDanhSachPhachRow(int STT, string MaSinhVien, string HoTenSV, string MaPhach, string TenKyThi, string MonThi) {
                 DanhSachPhachRow rowDanhSachPhachRow = ((DanhSachPhachRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         STT,
@@ -486,7 +486,7 @@ namespace KhaoThiSoftware.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnSTT = new global::System.Data.DataColumn("STT", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnSTT = new global::System.Data.DataColumn("STT", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSTT);
                 this.columnMaSinhVien = new global::System.Data.DataColumn("MaSinhVien", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMaSinhVien);
@@ -741,7 +741,7 @@ namespace KhaoThiSoftware.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ThongKePhachRow AddThongKePhachRow(string TenKyThi, string TenMonThi, string PhachBatDau, string PhachKetThuc) {
+            public ThongKePhachRow AddThongKePhachRow(string TenKyThi, string TenMonThi, int PhachBatDau, int PhachKetThuc) {
                 ThongKePhachRow rowThongKePhachRow = ((ThongKePhachRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TenKyThi,
@@ -783,9 +783,9 @@ namespace KhaoThiSoftware.Datasets {
                 base.Columns.Add(this.columnTenKyThi);
                 this.columnTenMonThi = new global::System.Data.DataColumn("TenMonThi", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTenMonThi);
-                this.columnPhachBatDau = new global::System.Data.DataColumn("PhachBatDau", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPhachBatDau = new global::System.Data.DataColumn("PhachBatDau", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPhachBatDau);
-                this.columnPhachKetThuc = new global::System.Data.DataColumn("PhachKetThuc", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnPhachKetThuc = new global::System.Data.DataColumn("PhachKetThuc", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPhachKetThuc);
             }
             
@@ -929,10 +929,10 @@ namespace KhaoThiSoftware.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string STT {
+            public int STT {
                 get {
                     try {
-                        return ((string)(this[this.tableDanhSachPhach.STTColumn]));
+                        return ((int)(this[this.tableDanhSachPhach.STTColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'STT\' in table \'DanhSachPhach\' is DBNull.", e);
@@ -1144,10 +1144,10 @@ namespace KhaoThiSoftware.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string PhachBatDau {
+            public int PhachBatDau {
                 get {
                     try {
-                        return ((string)(this[this.tableThongKePhach.PhachBatDauColumn]));
+                        return ((int)(this[this.tableThongKePhach.PhachBatDauColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PhachBatDau\' in table \'ThongKePhach\' is DBNull.", e);
@@ -1160,10 +1160,10 @@ namespace KhaoThiSoftware.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string PhachKetThuc {
+            public int PhachKetThuc {
                 get {
                     try {
-                        return ((string)(this[this.tableThongKePhach.PhachKetThucColumn]));
+                        return ((int)(this[this.tableThongKePhach.PhachKetThucColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'PhachKetThuc\' in table \'ThongKePhach\' is DBNull.", e);

@@ -9,7 +9,7 @@ namespace KhaoThiSoftware.Areas.Lectures.Controllers
 {
     public class KyThi_LeController : Controller
     {
-        // GET: Lectures/KyThi_Le
+        [Authorize(Roles = "Lecture")]
         public ActionResult Index()
         {
             using (var db = new KhaoThiDBContext())
