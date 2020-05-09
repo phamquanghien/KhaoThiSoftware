@@ -9,5 +9,8 @@
 </div>
 
 <div>
-    <h2>@ViewBag.ThongBao</h2>
+    @foreach (var item in ViewBag.DanhSach)
+    {
+        @Html.Raw(item); <br />
+    }
 </div>

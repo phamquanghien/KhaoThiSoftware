@@ -231,7 +231,7 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             db.SaveChanges();
         }
 
-        private int InsertDataPhach(int? id)
+        private int InsertDataPhach1(int? id)
         {
             var listDanhSachThi = db.DanhSachThis.Where(m => m.IdKyThi == id).ToList();
             DataTable table = new DataTable();
@@ -248,6 +248,52 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
             //var countPhach = db.DanhSachPhachs.Where(m => m.IdKyThi == id).Select(m => m.SoPhach).Distinct().ToList().Count;
             var countPhach = table.Rows.Count;
             return countPhach;
+        }
+
+        //group by Monhoc
+        private int InsertDataPhach(int? id)
+        {
+            try
+            {
+                //get list mon thi
+                var listMonThi = db.DanhSachThis.Where(m => m.IdKyThi == id).Select(m => m.f_tenmhvn).Distinct().ToList();
+                //table chua danh sach phach
+                DataTable table = new DataTable();
+                table.Columns.Add("SoPhach", typeof(string));
+                table.Columns.Add("IdDanhSachThi", typeof(double));
+                table.Columns.Add("IdKyThi", typeof(int));
+                int startPhach = 1;
+                for (int i = 0; i < listMonThi.Count; i++)
+                {
+                    var tkp = new ThongKePhach();
+                    var tenMon = listMonThi[i].ToString();
+                    //bug fixing
+                    var listDanhSachThi = db.DanhSachThis.Where(m => m.IdKyThi == id && m.f_tenmhvn == tenMon).ToList();
+                    //string[] arrCode = proLogic.GenBeatcodeWithQuantity(listDanhSachThi.Count, 5);
+                    string[] arrCode = proLogic.GenerateBeatcode(startPhach, startPhach + listDanhSachThi.Count, 5);
+                    for (int j = 0; j < arrCode.Length; j++)
+                    {
+                        table.Rows.Add(arrCode[j].ToString(), Convert.ToDouble(listDanhSachThi[j].IdDanhSachThi), id);
+                    }
+                    tkp.TenMonThi = tenMon;
+                    tkp.PhachBatDau = startPhach;
+                    //tinh gia tri bat dau sinh phach cua mon tiep theo
+                    startPhach += listDanhSachThi.Count;
+                    tkp.PhachKetThuc = startPhach - 1;
+                    tkp.IdKyThi = id;
+                    db.ThongKePhachs.Add(tkp);
+                    db.SaveChanges();
+                }
+                //copy du lieu
+                CopyDataByBulk(table);
+                var countPhach = table.Rows.Count;
+                return countPhach;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+            
         }
 
         private int InsertDataPhachBoSung(int? id)

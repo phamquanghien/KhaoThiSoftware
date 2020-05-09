@@ -18,10 +18,7 @@
         <th>
             <label>Tên kỳ thi</label>
         </th>
-        <th>
-            <label>Chú thích</label>
-        </th>
-        <th></th>
+        <th>Thao tác</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -33,12 +30,10 @@
             @Html.DisplayFor(modelItem => item.TenKyThi)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ChuThich)
-        </td>
-        <td>
             @Html.ActionLink("Sửa", "Edit", new { id = item.IdKyThi }, new { @class = "btn btn-primary" }) |
             @Html.ActionLink("Xoá", "Delete", new { id = item.IdKyThi }, new { @class = "btn btn-primary" }) |
             @Html.ActionLink("Danh sách thí sinh", "Index", "DanhSachThi_Ad", new { id = item.IdKyThi }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Thống kê phách", "ThongKePhach", "KyThi_Ad", new { id = item.IdKyThi }, new { @class = "btn btn-primary" })
         </td>
     </tr>
 }

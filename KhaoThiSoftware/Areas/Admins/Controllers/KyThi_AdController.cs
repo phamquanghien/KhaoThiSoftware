@@ -4,6 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using KhaoThiSoftware.Models;
+using KhaoThiSoftware.Reports.rpt;
+using System.Data;
+using System.IO;
+using CrystalDecisions.Shared;
 
 namespace KhaoThiSoftware.Areas.Admins.Controllers
 {
@@ -118,6 +122,45 @@ namespace KhaoThiSoftware.Areas.Admins.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ThongKePhach(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            KyThi kyThi = db.KyThis.Find(id);
+            if (kyThi == null || kyThi.isDelete == true)
+            {
+                return View("~/Views/Shared/404Notfound.cshtml");
+            }
+            var model = (from tkp in db.ThongKePhachs
+                         join kt in db.KyThis
+                         on tkp.IdKyThi equals kt.IdKyThi
+                         where tkp.IdKyThi == id
+                         
+                         select new {
+                             tenKyThi = kt.TenKyThi,
+                             tenMonThi = tkp.TenMonThi,
+                             phachBD = tkp.PhachBatDau,
+                             phachKT = tkp.PhachKetThuc
+
+                         }).Distinct().ToList();
+            rptThongKePhach rpt = new rptThongKePhach();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("TenKyThi", typeof(String));
+            dt.Columns.Add("TenMonThi", typeof(String));
+            dt.Columns.Add("PhachBatDau", typeof(String));
+            dt.Columns.Add("PhachKetThuc", typeof(String));
+            for (int i = 0; i < model.Count; i++)
+            {
+                dt.Rows.Add(model[i].tenKyThi, model[i].tenMonThi, model[i].phachBD, model[i].phachKT);
+            }
+            rpt.Load();
+            rpt.SetDataSource(dt);
+            Stream s = rpt.ExportToStream(ExportFormatType.WordForWindows);
+            return File(s, "application/docx", "Report.doc");
         }
 
         protected override void Dispose(bool disposing)

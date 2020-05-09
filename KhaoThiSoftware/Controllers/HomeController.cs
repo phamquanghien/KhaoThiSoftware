@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using KhaoThiSoftware.Models;
+using System.Linq;
 
 namespace KhaoThiSoftware.Controllers
 {
@@ -9,6 +10,8 @@ namespace KhaoThiSoftware.Controllers
         //[Authorize]
         public ActionResult Index()
         {
+            var model = db.DanhSachThis.Where(m => m.IdKyThi == 1).Select(m => m.f_tenmhvn).Distinct().ToList();
+            ViewBag.DanhSach = model;
             return View();
         }
     }

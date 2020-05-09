@@ -101,6 +101,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -109,6 +113,14 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -199,6 +211,14 @@
     <Compile Include="Migrations\202005071456516_Create_Table_KetQuaThi_TestNhapDiem.Designer.cs">
       <DependentUpon>202005071456516_Create_Table_KetQuaThi_TestNhapDiem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005080946548_Create_Table_ThongKePhach.cs" />
+    <Compile Include="Migrations\202005080946548_Create_Table_ThongKePhach.Designer.cs">
+      <DependentUpon>202005080946548_Create_Table_ThongKePhach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005080955084_Alter_Table_ThongKePhach.cs" />
+    <Compile Include="Migrations\202005080955084_Alter_Table_ThongKePhach.Designer.cs">
+      <DependentUpon>202005080955084_Alter_Table_ThongKePhach.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\DanhSachPhach.cs" />
@@ -214,6 +234,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\TestNhapDiem.cs" />
     <Compile Include="Models\Process\UsersRoleProvider.cs" />
+    <Compile Include="Models\ThongKePhach.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\rpt\GenerateBarcode.cs">
       <AutoGen>True</AutoGen>
@@ -243,6 +264,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptPhachThi.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\rpt\rptThongKePhach.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptThongKePhach.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
@@ -353,6 +380,12 @@
     <EmbeddedResource Include="Migrations\202005071456516_Create_Table_KetQuaThi_TestNhapDiem.resx">
       <DependentUpon>202005071456516_Create_Table_KetQuaThi_TestNhapDiem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005080946548_Create_Table_ThongKePhach.resx">
+      <DependentUpon>202005080946548_Create_Table_ThongKePhach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005080955084_Alter_Table_ThongKePhach.resx">
+      <DependentUpon>202005080955084_Alter_Table_ThongKePhach.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt\GenerateBarcode.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GenerateBarcode.cs</LastGenOutput>
@@ -372,6 +405,10 @@
     <EmbeddedResource Include="Reports\rpt\rptPhachThi.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptPhachThi.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt\rptThongKePhach.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptThongKePhach.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

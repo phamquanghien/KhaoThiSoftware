@@ -16,6 +16,7 @@ namespace KhaoThiSoftware.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<KetQuaThi> KetQuaThis { get; set; }
         public virtual DbSet<TestNhapDiem> TestNhapDiems { get; set; }
+        public virtual DbSet<ThongKePhach> ThongKePhachs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
