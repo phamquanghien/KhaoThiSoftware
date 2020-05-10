@@ -17,6 +17,7 @@ namespace KhaoThiSoftware.Models
         public float Diem2 { get; set; }
         public float DiemTrungBinh { get; set; }
         public int IdKyThi { get; set; }
+        public string f_tenmhvn { get; set; }
         public bool Active { get; set; }
     }
 }

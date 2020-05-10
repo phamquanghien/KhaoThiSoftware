@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Areas/Lectures/Views/Shared/_LayoutLe.cshtml";
+}
+
+
+@foreach (var item in @ViewBag.listDiem)
+{
+    <p>@item.soPhach-@item.diemTB</p>
+}

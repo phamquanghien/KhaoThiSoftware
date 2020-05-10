@@ -6,6 +6,7 @@
 }
 
 <h2>Danh sách kỳ thi</h2>
+
 <table class="table">
     <tr>
         <th>
@@ -26,9 +27,8 @@
             @Html.DisplayFor(modelItem => item.TenKyThi)
         </td>
         <td>
-            @Html.ActionLink("Kiểm tra Phách", "UploadFile", new { id=item.IdKyThi }, new { @class = "btn btn-success"})
+            @Html.ActionLink("Kiểm tra Phách", "CheckPhach", new { id=item.IdKyThi }, new { @class = "btn btn-success"})
         </td>
     </tr>
 }
-
 </table>

@@ -219,6 +219,10 @@
     <Compile Include="Migrations\202005080955084_Alter_Table_ThongKePhach.Designer.cs">
       <DependentUpon>202005080955084_Alter_Table_ThongKePhach.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005091626314_Add_Column_TestNhapDiem_TenMon.cs" />
+    <Compile Include="Migrations\202005091626314_Add_Column_TestNhapDiem_TenMon.Designer.cs">
+      <DependentUpon>202005091626314_Add_Column_TestNhapDiem_TenMon.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\DanhSachPhach.cs" />
@@ -1460,6 +1464,9 @@
     <Content Include="Areas\Admins\Views\Role_Ad\Edit.cshtml" />
     <Content Include="Areas\Admins\Views\Role_Ad\Index.cshtml" />
     <Content Include="Areas\Lectures\Views\KyThi_Le\Index.cshtml" />
+    <Content Include="Areas\Lectures\Views\KyThi_Le\UploadFaile.cshtml" />
+    <Content Include="Areas\Lectures\Views\KyThi_Le\CheckPhach.cshtml" />
+    <Content Include="Areas\Lectures\Views\KyThi_Le\ResultCheck.cshtml" />
     <None Include="Datasets\KhaoThiDataset.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1529,6 +1536,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005080955084_Alter_Table_ThongKePhach.resx">
       <DependentUpon>202005080955084_Alter_Table_ThongKePhach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005091626314_Add_Column_TestNhapDiem_TenMon.resx">
+      <DependentUpon>202005091626314_Add_Column_TestNhapDiem_TenMon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt\GenerateBarcode.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
